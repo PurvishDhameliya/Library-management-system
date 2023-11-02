@@ -9,17 +9,18 @@ const Books = () => {
         {/* Search Section */}
         <section className="py-12 bg-white flex ">
           <div className="container mx-auto">
-            <h2 className="text-3xl font-semibold mb-6">Search Books</h2>
+            <h2 className="text-3xl font-semibold mb-6 flex justify-center">Search Books</h2>
             {/* Search form or components go here */}
-            <form className="flex items-center space-x-4">
+            {/* Search form or components go here */}
+            <form className="flex items-center space-x-4 justify-center">
               <input
                 type="text"
                 placeholder="Enter book title or author"
-                className="w-full border border-gray-300 p-2 rounded"
+                className="w-96 border border-gray-300 p-2 rounded focus:outline-none focus:border-blue-500"
               />
               <button
                 type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                className="bg-amber-700 text-white px-4 py-2 rounded hover:bg-amber-400 focus:outline-none"
               >
                 Search
               </button>

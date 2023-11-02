@@ -1,23 +1,45 @@
 // Login.js
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../../store/authSlice";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+
+const LoginSchema = Yup.object().shape({
+  email: Yup.string().email("Invalid email").required("Email is required"),
+  password: Yup.string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
+});
 
 const Login = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  
-  const handleLogin = () => {
-    // Implement your authentication logic here
-    console.log("Logging in with:", { email, password });
-    navigate("/");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(LoginSchema),
+  });
+
+  const onSubmit = async (data) => {
+    try {
+      // Call your backend API for signup
+      // For simplicity, dispatch the signup action directly
+      dispatch(login(data));
+      navigate("/home");
+    } catch (error) {
+      console.error("login failed:", error.message);
+    }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md w-96">
         <h2 className="text-2xl font-semibold mb-4">Login</h2>
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
             <label
               htmlFor="email"
@@ -28,11 +50,16 @@ const Login = () => {
             <input
               type="email"
               id="email"
-              className="w-full border border-gray-300 p-2 rounded"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              {...register("email")}
+              className={`w-full border ${
+                errors.email ? "border-red-500" : "border-gray-300"
+              } p-2 rounded`}
             />
+            {errors.email && (
+              <p className="text-red-500 text-xs mt-1">
+                {errors.email.message}
+              </p>
+            )}
           </div>
           <div className="mb-4">
             <label
@@ -44,18 +71,23 @@ const Login = () => {
             <input
               type="password"
               id="password"
-              className="w-full border border-gray-300 p-2 rounded"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              {...register("password")}
+              className={`w-full border ${
+                errors.password ? "border-red-500" : "border-gray-300"
+              } p-2 rounded`}
             />
+            {errors.password && (
+              <p className="text-red-500 text-xs mt-1">
+                {errors.password.message}
+              </p>
+            )}
           </div>
+
           <button
-            type="button"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-            onClick={handleLogin}
+            type="submit"
+            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
           >
-            Login
+            Log In
           </button>
         </form>
       </div>
