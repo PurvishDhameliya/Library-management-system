@@ -29,7 +29,7 @@ const Login = () => {
       // Call your backend API for signup
       // For simplicity, dispatch the signup action directly
       dispatch(login(data));
-      navigate("/home");
+      navigate("/");
     } catch (error) {
       console.error("login failed:", error.message);
     }
