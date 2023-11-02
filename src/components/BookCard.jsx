@@ -1,6 +1,6 @@
 const BookCard = ({ title, author, imageUrl }) => {
   return (
-    <div className="p-4 rounded-md shadow-2xl">
+    <div className="p-4 rounded-md ">
       <img
         src={imageUrl}
         alt={title}

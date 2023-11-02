@@ -9,9 +9,10 @@ const Home = () => {
   const sliderSettings = {
     dots: true,
     infinite: true,
-    speed: 500,
-    slidesToShow: 3,
+    speed: 900,
+    slidesToShow: 4,
     slidesToScroll: 1,
+    swipeToSlide: true,
     responsive: [
       {
         breakpoint: 1024,
@@ -44,15 +45,15 @@ const Home = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gray-100 mx-8 md:mx-16 lg:mx-32">
-        <section className="py-12 bg-white">
+      <div className="min-h-screen  mx-8 md:mx-16 lg:mx-32">
+        <section className="py-12 ">
           <div className="container mx-auto">
             <h2 className="text-3xl font-semibold mb-6">Featured Books</h2>
             {renderBookSlider(featuredBooks)}
           </div>
         </section>
 
-        <section className="py-12 bg-gray-100">
+        <section className="py-12 ">
           <div className="container mx-auto">
             <h2 className="text-3xl font-semibold mb-6">New Arrivals</h2>
             {renderBookSlider(newArrivals)}
