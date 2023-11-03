@@ -6,6 +6,7 @@ import "./App.css";
 import Home from "./components/Home";
 import Login from "./components/auth/Login";
 import Signup from "./components/auth/Signup";
+import BookDetails from "./components/BookDetails";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/books" element={<Books />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/books/:id" element={<BookDetails />} />
       </Routes>
     </BrowserRouter>
   );
