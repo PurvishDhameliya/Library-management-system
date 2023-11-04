@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { signup } from "../../store/authSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -40,10 +41,25 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded shadow-md w-96">
+    <div
+      className="min-h-screen flex items-center justify-center bg-cover bg-center"
+      style={{
+        backgroundImage: `url('https://source.unsplash.com/1920x1080/?books')`,
+      }}
+    >
+      <motion.div
+        className="bg-white p-8 rounded shadow-md w-96"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <h2 className="text-2xl font-semibold mb-4">Sign Up</h2>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <motion.form
+          onSubmit={handleSubmit(onSubmit)}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
           <div className="mb-4">
             <label
               htmlFor="name"
@@ -132,8 +148,8 @@ const Signup = () => {
           >
             Sign Up
           </button>
-        </form>
-      </div>
+        </motion.form>
+      </motion.div>
     </div>
   );
 };

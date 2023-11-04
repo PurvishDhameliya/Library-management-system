@@ -1,7 +1,11 @@
-// Events.js
-import { motion } from "framer-motion";
-import { Link } from "react-router-dom"; // If you have a route for event details
-import PropTypes from "prop-types";
+
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/swiper-bundle.css';
+import { Pagination } from 'swiper/modules';
+
 
 const Events = ({ events }) => {
   const containerVariants = {
@@ -24,41 +28,70 @@ const Events = ({ events }) => {
     <motion.div
       className="py-12 mx-8 md:mx-16 lg:mx-32"
       variants={containerVariants}
-      initial="hidden"
-      animate="visible"
+      initial="hidden" 
+      animate="visible" 
     >
       <div className="container mx-auto">
-        <h2 className="text-3xl font-semibold mb-6">
-          Events and Announcements
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <h2 className="text-3xl font-semibold mb-6">Events and Announcements</h2>
+
+        <Swiper
+          slidesPerView={1}
+          spaceBetween={8}
+          pagination={{
+            clickable: true,
+          }}
+          allowTouchMove={true}
+          breakpoints={{
+            '@0.00': {
+              slidesPerView: 1,
+              spaceBetween: 10,
+            },
+            '@0.75': {
+              slidesPerView: 2,
+              spaceBetween: 20,
+            },
+            '@1.00': {
+              slidesPerView: 3,
+              spaceBetween: 40,
+            },
+            '@1.50': {
+              slidesPerView: 4,
+              spaceBetween: 50,
+            },
+          }}
+          modules={[Pagination]}
+          className="mySwiper"
+        >
           {events?.map((event) => (
-            <motion.div
-              key={event.id}
-              className="mb-8 bg-white p-6 rounded-md shadow-md"
-              variants={itemVariants}
-            >
-              <h3 className="text-xl font-semibold mb-2">{event.title}</h3>
-              <p className="text-gray-600 mb-2">{event.date}</p>
-              <p>{truncateDescription(event.description, 50)}</p>
-              <Link to={`/events/${event.id}`}>
-                <motion.button
-                  whileHover={{ scale: 1.1, backgroundColor: "#2D3A3A" }}
-                  whileTap={{ scale: 0.9 }}
-                  className="bg-yellow-500 text-white px-4 py-2 mt-4 rounded-md"
-                >
-                  View Details
-                </motion.button>
-              </Link>
-            </motion.div>
+            <SwiperSlide key={event.id}>
+              <motion.div
+                className="mb-8 bg-white p-6 rounded-md shadow-md flex flex-col mt-4 "
+                variants={itemVariants}
+                style={{ width: '300px', height: '300px' }}
+              >
+                <h3 className="text-xl font-semibold mb-2">{event.title}</h3>
+                <p className="text-gray-600 mb-2">{event.date}</p>
+                <p>{truncateDescription(event.description, 50)}</p>
+                <Link to={`/events/${event.id}`}>
+                  <motion.button
+                    whileHover={{ scale: 1.1, backgroundColor: '#2D3A3A' }}
+                    whileTap={{ scale: 0.9 }}
+                    className="bg-yellow-500 text-white px-4 py-2 mt-4 rounded-md"
+                  >
+                    View Details
+                  </motion.button>
+                </Link>
+              </motion.div>
+            </SwiperSlide>
           ))}
-        </div>
+        </Swiper>
       </div>
     </motion.div>
   );
 };
 
 Events.propTypes = {
-  events: PropTypes.string.isRequired,
+  events: PropTypes.array.isRequired,
 };
+
 export default Events;
