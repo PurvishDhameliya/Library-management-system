@@ -1,11 +1,12 @@
 // Signup.js
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
-import { useDispatch } from "react-redux";
-import { signup } from "../../store/authSlice";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import axios from "axios";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { signup } from "../../store/authSlice";
+import { useDispatch } from "react-redux";
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -13,14 +14,12 @@ const SignupSchema = Yup.object().shape({
   password: Yup.string()
     .min(6, "Password must be at least 6 characters")
     .required("Password is required"),
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password"), null], "Passwords must match")
-    .required("Confirm Password is required"),
 });
 
 const Signup = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const {
     register,
     handleSubmit,
@@ -31,10 +30,17 @@ const Signup = () => {
 
   const onSubmit = async (data) => {
     try {
-      // Call your backend API for signup
-      // For simplicity, dispatch the signup action directly
-      dispatch(signup(data));
-      navigate("/login");
+      const response = await axios.post(
+        "http://localhost:8080/api/auth/signup",
+        data
+      );
+
+      if (response.data.success) {
+        dispatch(signup(data));
+        navigate("/login");
+      } else {
+        console.error("Signup failed:", response.data.message);
+      }
     } catch (error) {
       console.error("Signup failed:", error.message);
     }
@@ -60,6 +66,7 @@ const Signup = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
+          {/* Form fields */}
           <div className="mb-4">
             <label
               htmlFor="name"
@@ -121,27 +128,8 @@ const Signup = () => {
               </p>
             )}
           </div>
-          <div className="mb-4">
-            <label
-              htmlFor="confirmPassword"
-              className="block text-gray-700 text-sm font-bold mb-2"
-            >
-              Confirm Password:
-            </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              {...register("confirmPassword")}
-              className={`w-full border ${
-                errors.confirmPassword ? "border-red-500" : "border-gray-300"
-              } p-2 rounded`}
-            />
-            {errors.confirmPassword && (
-              <p className="text-red-500 text-xs mt-1">
-                {errors.confirmPassword.message}
-              </p>
-            )}
-          </div>
+
+          {/* Submit button */}
           <button
             type="submit"
             className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"

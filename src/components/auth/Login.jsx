@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
+import axios from "axios";
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -26,10 +27,14 @@ const Login = () => {
   });
 
   const onSubmit = async (data) => {
+    console.log("FORMDATAA::::", data);
     try {
-      // Call your backend API for login
-      // For simplicity, dispatch the login action directly
-      dispatch(login(data));
+      const response = await axios.post(
+        "http://localhost:8080/api/auth/signin",
+        data
+      );
+      console.log(response.data);
+      dispatch(login(response.data));
       navigate("/");
     } catch (error) {
       console.error("Login failed:", error.message);

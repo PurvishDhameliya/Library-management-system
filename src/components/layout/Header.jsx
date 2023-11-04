@@ -1,10 +1,20 @@
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { selectAuth, logout } from "../../store/authSlice";
 
 const Header = () => {
+  const { user, isAuthenticated } = useSelector(selectAuth);
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    // Dispatch the logout action
+    dispatch(logout());
+  };
+
   return (
     <header className="flex justify-between bg-gray-50 p-8 text-black">
       <Link to="/">
-        <h1>Book Management System </h1>
+        <h1>Book Management System</h1>
       </Link>
       <div className="flex gap-5 mx-4">
         <Link to="/">Home</Link>
@@ -12,9 +22,17 @@ const Header = () => {
         <Link to="/about">About</Link>
       </div>
       <div className="flex gap-5">
-        <Link to="/login">Login</Link>
-        <Link to="/signup">Signup</Link>
-        
+        {isAuthenticated ? (
+          <>
+            <span>Welcome, {user.name}</span>
+            <button onClick={handleLogout}>Logout</button>
+          </>
+        ) : (
+          <>
+            <Link to="/login">Login</Link>
+            <Link to="/signup">Signup</Link>
+          </>
+        )}
       </div>
     </header>
   );
